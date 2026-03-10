@@ -1,0 +1,455 @@
+{
+  "node": {
+    "001bfca9c39744f18fbb0bdbb7644a280c0b62fa13": {
+      "workers": {
+        "app/app/page": {
+          "moduleId": 28073,
+          "async": true,
+          "exportedName": "getProfile",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "layer": {
+        "app/app/page": "rsc"
+      },
+      "exportedName": "getProfile",
+      "filename": "src/app/actions.ts"
+    },
+    "400df15c1496917d14ee86bf54cd59ebe6f02abdd6": {
+      "workers": {
+        "app/app/page": {
+          "moduleId": 28073,
+          "async": true,
+          "exportedName": "updateProfile",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "layer": {
+        "app/app/page": "rsc"
+      },
+      "exportedName": "updateProfile",
+      "filename": "src/app/actions.ts"
+    },
+    "009bd3b15de92cc2e06f5bc33e1380909d146e03f6": {
+      "workers": {
+        "app/app/page": {
+          "moduleId": 28073,
+          "async": true,
+          "exportedName": "getJobs",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "layer": {
+        "app/app/page": "rsc"
+      },
+      "exportedName": "getJobs",
+      "filename": "src/app/actions.ts"
+    },
+    "40d6fa43c5c663856974a88addc1997e3f219b66e3": {
+      "workers": {
+        "app/app/page": {
+          "moduleId": 28073,
+          "async": true,
+          "exportedName": "getJobById",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "layer": {
+        "app/app/page": "rsc"
+      },
+      "exportedName": "getJobById",
+      "filename": "src/app/actions.ts"
+    },
+    "4051eb9b77b661afd8bf87018c101a5d2fa07d02ad": {
+      "workers": {
+        "app/app/page": {
+          "moduleId": 28073,
+          "async": true,
+          "exportedName": "createJob",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "layer": {
+        "app/app/page": "rsc"
+      },
+      "exportedName": "createJob",
+      "filename": "src/app/actions.ts"
+    },
+    "6058a6217633058f924af7dbebd7c7a9422a79e1b7": {
+      "workers": {
+        "app/app/page": {
+          "moduleId": 28073,
+          "async": true,
+          "exportedName": "updateJob",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "layer": {
+        "app/app/page": "rsc"
+      },
+      "exportedName": "updateJob",
+      "filename": "src/app/actions.ts"
+    },
+    "40e4e2934ecce8b67cd3fe20589e37c8da6b137730": {
+      "workers": {
+        "app/app/page": {
+          "moduleId": 28073,
+          "async": true,
+          "exportedName": "deleteJob",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "layer": {
+        "app/app/page": "rsc"
+      },
+      "exportedName": "deleteJob",
+      "filename": "src/app/actions.ts"
+    },
+    "0025731509c78d9703a16e46064e13ec9108794f4b": {
+      "workers": {
+        "app/app/page": {
+          "moduleId": 28073,
+          "async": true,
+          "exportedName": "getJobsWithHighlights",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "layer": {
+        "app/app/page": "rsc"
+      },
+      "exportedName": "getJobsWithHighlights",
+      "filename": "src/app/actions.ts"
+    },
+    "4000b97d70a7b3282a24efe7702971974793d9a02c": {
+      "workers": {
+        "app/app/page": {
+          "moduleId": 28073,
+          "async": true,
+          "exportedName": "getHighlights",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "layer": {
+        "app/app/page": "rsc"
+      },
+      "exportedName": "getHighlights",
+      "filename": "src/app/actions.ts"
+    },
+    "400ab498bcc931e033dfee390147c000183b7f7f8b": {
+      "workers": {
+        "app/app/page": {
+          "moduleId": 28073,
+          "async": true,
+          "exportedName": "getHighlightById",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "layer": {
+        "app/app/page": "rsc"
+      },
+      "exportedName": "getHighlightById",
+      "filename": "src/app/actions.ts"
+    },
+    "408cd22040e4744bf68a8111910d699542e52a5cb8": {
+      "workers": {
+        "app/app/page": {
+          "moduleId": 28073,
+          "async": true,
+          "exportedName": "createHighlight",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "layer": {
+        "app/app/page": "rsc"
+      },
+      "exportedName": "createHighlight",
+      "filename": "src/app/actions.ts"
+    },
+    "60c148d60d81843c6491ab71add040384c56ca83a9": {
+      "workers": {
+        "app/app/page": {
+          "moduleId": 28073,
+          "async": true,
+          "exportedName": "updateHighlight",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "layer": {
+        "app/app/page": "rsc"
+      },
+      "exportedName": "updateHighlight",
+      "filename": "src/app/actions.ts"
+    },
+    "40db632fa5a16f5fd57ed07886363022d3e5df213f": {
+      "workers": {
+        "app/app/page": {
+          "moduleId": 28073,
+          "async": true,
+          "exportedName": "deleteHighlight",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "layer": {
+        "app/app/page": "rsc"
+      },
+      "exportedName": "deleteHighlight",
+      "filename": "src/app/actions.ts"
+    },
+    "40f75cf14bdc417e79612118e97eff5a2041ab7667": {
+      "workers": {
+        "app/app/page": {
+          "moduleId": 28073,
+          "async": true,
+          "exportedName": "toggleHighlightVisibility",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "layer": {
+        "app/app/page": "rsc"
+      },
+      "exportedName": "toggleHighlightVisibility",
+      "filename": "src/app/actions.ts"
+    },
+    "006447acdf3ed70fa81b68571e509a96deb1f29eec": {
+      "workers": {
+        "app/app/page": {
+          "moduleId": 28073,
+          "async": true,
+          "exportedName": "getAllHighlightsWithJobs",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "layer": {
+        "app/app/page": "rsc"
+      },
+      "exportedName": "getAllHighlightsWithJobs",
+      "filename": "src/app/actions.ts"
+    },
+    "409fef83ad19e1dba93fb0f574cdb5b56b52d33039": {
+      "workers": {
+        "app/app/page": {
+          "moduleId": 28073,
+          "async": true,
+          "exportedName": "searchHighlights",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "layer": {
+        "app/app/page": "rsc"
+      },
+      "exportedName": "searchHighlights",
+      "filename": "src/app/actions.ts"
+    },
+    "40297443881de5839ac264d33cad66fb7adb6f031b": {
+      "workers": {
+        "app/app/page": {
+          "moduleId": 28073,
+          "async": true,
+          "exportedName": "searchJobsWithHighlights",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "layer": {
+        "app/app/page": "rsc"
+      },
+      "exportedName": "searchJobsWithHighlights",
+      "filename": "src/app/actions.ts"
+    },
+    "00dda23b73d46cfa497cf729f1fe3c60684c5c269c": {
+      "workers": {
+        "app/app/page": {
+          "moduleId": 28073,
+          "async": true,
+          "exportedName": "getAllDomains",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "layer": {
+        "app/app/page": "rsc"
+      },
+      "exportedName": "getAllDomains",
+      "filename": "src/app/actions.ts"
+    },
+    "004fb3d334e9f82c284b3793397cb792a2a29507b3": {
+      "workers": {
+        "app/app/page": {
+          "moduleId": 28073,
+          "async": true,
+          "exportedName": "getAllSkills",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "layer": {
+        "app/app/page": "rsc"
+      },
+      "exportedName": "getAllSkills",
+      "filename": "src/app/actions.ts"
+    },
+    "001fe7cb9555f85ee6856a35c6007e1475bbc56ee4": {
+      "workers": {
+        "app/app/page": {
+          "moduleId": 28073,
+          "async": true,
+          "exportedName": "exportDatabase",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "layer": {
+        "app/app/page": "rsc"
+      },
+      "exportedName": "exportDatabase",
+      "filename": "src/app/actions.ts"
+    },
+    "4082f4c000a519a3663d2ae7637e5087147af17d41": {
+      "workers": {
+        "app/app/page": {
+          "moduleId": 28073,
+          "async": true,
+          "exportedName": "importDatabase",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "layer": {
+        "app/app/page": "rsc"
+      },
+      "exportedName": "importDatabase",
+      "filename": "src/app/actions.ts"
+    },
+    "0068055cc5e7c4adb959f891fbca0651e944d85ed5": {
+      "workers": {
+        "app/app/page": {
+          "moduleId": 28073,
+          "async": true,
+          "exportedName": "clearDatabase",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "layer": {
+        "app/app/page": "rsc"
+      },
+      "exportedName": "clearDatabase",
+      "filename": "src/app/actions.ts"
+    },
+    "006e796d4c9f214404486e858e3100727f0d32988c": {
+      "workers": {
+        "app/app/page": {
+          "moduleId": 28073,
+          "async": true,
+          "exportedName": "getUserDatabaseStatus",
+          "filename": "src/app/actions/user-db.ts"
+        }
+      },
+      "layer": {
+        "app/app/page": "rsc"
+      },
+      "exportedName": "getUserDatabaseStatus",
+      "filename": "src/app/actions/user-db.ts"
+    },
+    "00f639f526de5f0ce057d281d044c0f65a1d128b68": {
+      "workers": {
+        "app/app/page": {
+          "moduleId": 28073,
+          "async": true,
+          "exportedName": "provisionUserDatabase",
+          "filename": "src/app/actions/user-db.ts"
+        }
+      },
+      "layer": {
+        "app/app/page": "rsc"
+      },
+      "exportedName": "provisionUserDatabase",
+      "filename": "src/app/actions/user-db.ts"
+    },
+    "40e6ba29eac281e56b1ebcfd81dc5a337291228e0a": {
+      "workers": {
+        "app/app/page": {
+          "moduleId": 28073,
+          "async": true,
+          "exportedName": "migrateLocalData",
+          "filename": "src/app/actions/user-db.ts"
+        }
+      },
+      "layer": {
+        "app/app/page": "rsc"
+      },
+      "exportedName": "migrateLocalData",
+      "filename": "src/app/actions/user-db.ts"
+    },
+    "0066755838cec89092ac671190c42fbcb372a1c2eb": {
+      "workers": {
+        "app/app/page": {
+          "moduleId": 28073,
+          "async": true,
+          "exportedName": "hasServerData",
+          "filename": "src/app/actions/user-db.ts"
+        }
+      },
+      "layer": {
+        "app/app/page": "rsc"
+      },
+      "exportedName": "hasServerData",
+      "filename": "src/app/actions/user-db.ts"
+    },
+    "40cff30ba17f2a60957924c2cef6062542eb8e0283": {
+      "workers": {
+        "app/app/page": {
+          "moduleId": 28073,
+          "async": true,
+          "exportedName": "getHighlightsByJobId",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "layer": {
+        "app/app/page": "rsc"
+      },
+      "exportedName": "getHighlightsByJobId",
+      "filename": "src/app/actions.ts"
+    },
+    "4091db9b3efad2e4c249ccfa5bbcad88a34eab2308": {
+      "workers": {
+        "app/app/page": {
+          "moduleId": 28073,
+          "async": true,
+          "exportedName": "bulkDeleteHighlights",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "layer": {
+        "app/app/page": "rsc"
+      },
+      "exportedName": "bulkDeleteHighlights",
+      "filename": "src/app/actions.ts"
+    },
+    "60f85c6997ec54b380b9ebe20e1541466476b58b6d": {
+      "workers": {
+        "app/app/page": {
+          "moduleId": 28073,
+          "async": true,
+          "exportedName": "quickUpdateHighlightTitle",
+          "filename": "src/app/actions.ts"
+        }
+      },
+      "layer": {
+        "app/app/page": "rsc"
+      },
+      "exportedName": "quickUpdateHighlightTitle",
+      "filename": "src/app/actions.ts"
+    },
+    "00b8355900c5c1a61edae4ebc662129baa487e770e": {
+      "workers": {
+        "app/app/page": {
+          "moduleId": 28073,
+          "async": true,
+          "exportedName": "getUserDatabaseInfo",
+          "filename": "src/app/actions/user-db.ts"
+        }
+      },
+      "layer": {
+        "app/app/page": "rsc"
+      },
+      "exportedName": "getUserDatabaseInfo",
+      "filename": "src/app/actions/user-db.ts"
+    }
+  },
+  "edge": {}
+}

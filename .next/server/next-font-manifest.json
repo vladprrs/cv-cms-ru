@@ -1,0 +1,71 @@
+{
+  "app": {
+    "[project]/src/app/_not-found/page": [
+      "static/media/8a480f0b521d4e75-s.p.8e0177b5.woff2",
+      "static/media/caa3a2e1cccd8315-s.p.853070df.woff2",
+      "static/media/4fa387ec64143e14-s.p.c1fdd6c2.woff2",
+      "static/media/797e433ab948586e-s.p.dbea232f.woff2",
+      "static/media/65c558afe41e89d6-s.p.e2c8389a.woff2",
+      "static/media/2a65768255d6b625-s.p.d19752fb.woff2"
+    ],
+    "[project]/src/app/app/page": [
+      "static/media/8a480f0b521d4e75-s.p.8e0177b5.woff2",
+      "static/media/caa3a2e1cccd8315-s.p.853070df.woff2",
+      "static/media/4fa387ec64143e14-s.p.c1fdd6c2.woff2",
+      "static/media/797e433ab948586e-s.p.dbea232f.woff2",
+      "static/media/65c558afe41e89d6-s.p.e2c8389a.woff2",
+      "static/media/2a65768255d6b625-s.p.d19752fb.woff2"
+    ],
+    "[project]/src/app/optimize/page": [
+      "static/media/8a480f0b521d4e75-s.p.8e0177b5.woff2",
+      "static/media/caa3a2e1cccd8315-s.p.853070df.woff2",
+      "static/media/4fa387ec64143e14-s.p.c1fdd6c2.woff2",
+      "static/media/797e433ab948586e-s.p.dbea232f.woff2",
+      "static/media/65c558afe41e89d6-s.p.e2c8389a.woff2",
+      "static/media/2a65768255d6b625-s.p.d19752fb.woff2"
+    ],
+    "[project]/src/app/page": [
+      "static/media/8a480f0b521d4e75-s.p.8e0177b5.woff2",
+      "static/media/caa3a2e1cccd8315-s.p.853070df.woff2",
+      "static/media/4fa387ec64143e14-s.p.c1fdd6c2.woff2",
+      "static/media/797e433ab948586e-s.p.dbea232f.woff2",
+      "static/media/65c558afe41e89d6-s.p.e2c8389a.woff2",
+      "static/media/2a65768255d6b625-s.p.d19752fb.woff2"
+    ],
+    "[project]/src/app/privacy/page": [
+      "static/media/8a480f0b521d4e75-s.p.8e0177b5.woff2",
+      "static/media/caa3a2e1cccd8315-s.p.853070df.woff2",
+      "static/media/4fa387ec64143e14-s.p.c1fdd6c2.woff2",
+      "static/media/797e433ab948586e-s.p.dbea232f.woff2",
+      "static/media/65c558afe41e89d6-s.p.e2c8389a.woff2",
+      "static/media/2a65768255d6b625-s.p.d19752fb.woff2"
+    ],
+    "[project]/src/app/settings/page": [
+      "static/media/8a480f0b521d4e75-s.p.8e0177b5.woff2",
+      "static/media/caa3a2e1cccd8315-s.p.853070df.woff2",
+      "static/media/4fa387ec64143e14-s.p.c1fdd6c2.woff2",
+      "static/media/797e433ab948586e-s.p.dbea232f.woff2",
+      "static/media/65c558afe41e89d6-s.p.e2c8389a.woff2",
+      "static/media/2a65768255d6b625-s.p.d19752fb.woff2"
+    ],
+    "[project]/src/app/signin/page": [
+      "static/media/8a480f0b521d4e75-s.p.8e0177b5.woff2",
+      "static/media/caa3a2e1cccd8315-s.p.853070df.woff2",
+      "static/media/4fa387ec64143e14-s.p.c1fdd6c2.woff2",
+      "static/media/797e433ab948586e-s.p.dbea232f.woff2",
+      "static/media/65c558afe41e89d6-s.p.e2c8389a.woff2",
+      "static/media/2a65768255d6b625-s.p.d19752fb.woff2"
+    ],
+    "[project]/src/app/terms/page": [
+      "static/media/8a480f0b521d4e75-s.p.8e0177b5.woff2",
+      "static/media/caa3a2e1cccd8315-s.p.853070df.woff2",
+      "static/media/4fa387ec64143e14-s.p.c1fdd6c2.woff2",
+      "static/media/797e433ab948586e-s.p.dbea232f.woff2",
+      "static/media/65c558afe41e89d6-s.p.e2c8389a.woff2",
+      "static/media/2a65768255d6b625-s.p.d19752fb.woff2"
+    ]
+  },
+  "appUsingSizeAdjust": true,
+  "pages": {},
+  "pagesUsingSizeAdjust": false
+}
