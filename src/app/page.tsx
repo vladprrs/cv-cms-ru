@@ -30,9 +30,9 @@ import {
 } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'CV CMS - Build Tailored Resumes in Minutes, Not Hours',
+  title: 'CV CMS — Создавайте адресные резюме за минуты, а не за часы',
   description:
-    'A headless CMS for your career data. Store your experience as atomic blocks and generate ATS-optimized resumes tailored to each job posting in 5 minutes.',
+    'Headless CMS для карьерных данных. Храните опыт в виде атомарных блоков и генерируйте ATS-оптимизированные резюме под каждую вакансию за 5 минут.',
 };
 
 // ─── Navbar ──────────────────────────────────────────────────────────────────
@@ -47,11 +47,11 @@ function Navbar() {
           </Link>
           <div className="flex items-center gap-3">
             <Button variant="ghost" size="sm" asChild>
-              <Link href="/signin">Sign In</Link>
+              <Link href="/signin">Войти</Link>
             </Button>
             <Button size="sm" className="pr-1.5" asChild>
               <Link href="/app">
-                <span>Try Free</span>
+                <span>Попробовать</span>
                 <ChevronRight className="opacity-50" />
               </Link>
             </Button>
@@ -70,16 +70,16 @@ function Hero() {
       <div className="mx-auto w-full max-w-5xl px-6">
         <div className="mx-auto max-w-2xl text-center">
           <h1 className="text-balance font-serif text-4xl font-medium sm:text-5xl">
-            A headless CMS for your career data.
+            Headless CMS для ваших карьерных данных.
           </h1>
           <p className="text-muted-foreground mt-4 text-balance text-lg">
-            Store your entire career as atomic blocks — achievements, projects,
-            metrics — and reassemble them into ATS-optimized resumes tailored to
-            each job posting. 5 minutes, not an hour.
+            Храните весь карьерный путь в виде атомарных блоков — достижения,
+            проекты, метрики — и собирайте из них ATS-оптимизированные резюме
+            под каждую вакансию. 5 минут вместо часа.
           </p>
           <Button asChild className="mt-8 pr-1.5">
             <Link href="/app">
-              <span className="text-nowrap">Try Free — No Sign-Up Required</span>
+              <span className="text-nowrap">Попробовать бесплатно — без регистрации</span>
               <ChevronRight className="opacity-50" />
             </Link>
           </Button>
@@ -94,21 +94,21 @@ function Hero() {
 const features = [
   {
     icon: Upload,
-    title: 'Load once, reuse forever',
+    title: 'Загрузите один раз — используйте всегда',
     description:
-      'Fill in manually or import from a JSON file. Use our AI prompt helper to convert any CV into structured data. Every project, metric, and achievement becomes a separate atom with rich metadata.',
+      'Заполните вручную или импортируйте из JSON-файла. Используйте AI-промпт, чтобы превратить любое резюме в структурированные данные. Каждый проект, метрика и достижение становится отдельным атомом с богатыми метаданными.',
   },
   {
     icon: Target,
-    title: 'See how your experience maps',
+    title: 'Увидьте, как ваш опыт ложится на вакансию',
     description:
-      'Paste a job description — the system selects the most relevant atoms from your full career history and assembles them into a targeted resume.',
+      'Вставьте описание вакансии — система выберет самые релевантные атомы из всей карьерной истории и соберёт из них целевое резюме.',
   },
   {
     icon: Zap,
-    title: 'Generate in 5 minutes',
+    title: 'Сгенерируйте за 5 минут',
     description:
-      'Get bullet points rewritten in the language of the job posting, edit the result inline, and download a clean PDF.',
+      'Получите буллеты, переписанные на языке вакансии, отредактируйте результат прямо в интерфейсе и скачайте чистый PDF.',
   },
 ];
 
@@ -118,12 +118,12 @@ function Features() {
       <div className="mx-auto max-w-5xl px-6">
         <div className="max-w-2xl">
           <h2 className="text-balance font-serif text-3xl font-medium sm:text-4xl">
-            Apply to 10 jobs a week — each time with a resume that actually hits the mark
+            Откликайтесь на 10 вакансий в неделю — каждый раз с резюме, которое попадает в точку
           </h2>
           <p className="text-muted-foreground mt-4 text-balance">
-            CV CMS stores your entire career as atomic blocks and reassembles them
-            into a resume tailored to each specific role. ATS-optimized,
-            keyword-aligned, professional PDF output.
+            CV CMS хранит весь ваш карьерный путь в виде атомарных блоков и собирает
+            из них резюме под конкретную роль. ATS-оптимизация,
+            релевантные ключевые слова, профессиональный PDF.
           </p>
         </div>
         <div className="mt-12 grid gap-3 sm:grid-cols-3">
@@ -151,17 +151,17 @@ function Stats() {
         <div className="grid grid-cols-2 gap-6 text-sm sm:grid-cols-3">
           <div className="border-y py-6">
             <p className="text-muted-foreground text-xl">
-              <span className="text-foreground font-medium">5 min</span> per tailored resume.
+              <span className="text-foreground font-medium">5 мин</span> на адресное резюме.
             </p>
           </div>
           <div className="border-y py-6">
             <p className="text-muted-foreground text-xl">
-              <span className="text-foreground font-medium">8-9 hrs</span> saved per week at 10 applications.
+              <span className="text-foreground font-medium">8–9 часов</span> экономии в неделю при 10 откликах.
             </p>
           </div>
           <div className="border-y py-6">
             <p className="text-muted-foreground text-xl">
-              <span className="text-foreground font-medium">100%</span> of your career in one structured base.
+              <span className="text-foreground font-medium">100%</span> карьеры в одной структурированной базе.
             </p>
           </div>
         </div>
@@ -180,16 +180,16 @@ function CtaTryNow() {
           <div className="text-center">
             <Sparkles className="mx-auto mb-4 h-5 w-5 text-muted-foreground" />
             <h2 className="text-balance font-serif text-3xl font-medium sm:text-4xl">
-              Try it now — no sign-up required
+              Попробуйте прямо сейчас — без регистрации
             </h2>
             <p className="text-muted-foreground mx-auto mt-4 max-w-md text-balance">
-              Start entering your experience or import a JSON file. Use our AI
-              prompt to convert any CV into structured data. You&apos;ll see your
-              career the way you&apos;ve never seen it before.
+              Начните вводить свой опыт или импортируйте JSON-файл. Используйте
+              AI-промпт, чтобы превратить любое резюме в структурированные данные.
+              Вы увидите свою карьеру так, как никогда раньше.
             </p>
             <Button asChild className="mt-6 pr-1.5">
               <Link href="/app">
-                <span>Start Building</span>
+                <span>Начать</span>
                 <ChevronRight className="opacity-50" />
               </Link>
             </Button>
@@ -207,10 +207,10 @@ function AhaMoments() {
     <section className="py-16">
       <div className="mx-auto max-w-5xl px-6">
         <h2 className="text-balance font-serif text-3xl font-medium sm:text-4xl">
-          Two moments after which you&apos;ll never go back
+          Два момента, после которых вы не вернётесь к старому способу
         </h2>
         <p className="text-muted-foreground mt-4 text-balance max-w-xl">
-          These realizations change how you approach every job application.
+          Эти осознания меняют подход к каждому отклику на вакансию.
         </p>
         <div className="mt-12 grid gap-3 sm:grid-cols-2">
           <Card className="border-border/50 shadow-none p-6">
@@ -218,13 +218,13 @@ function AhaMoments() {
               <Quote className="text-foreground/15 h-8 w-8" />
               <div className="space-y-2">
                 <h3 className="text-foreground font-medium text-lg">
-                  &quot;I actually have 47 significant achievements&quot;
+                  &laquo;У меня, оказывается, 47 значимых достижений&raquo;
                 </h3>
                 <p className="text-muted-foreground text-sm">
-                  After import, you&apos;ll see your experience decomposed into atoms
-                  — each with metrics, domains, tech stack, and role context. Most
-                  people are surprised: turns out 7-10 years of work add up to far
-                  more than fits on a single page.
+                  После импорта вы увидите свой опыт, разложенный на атомы —
+                  каждый с метриками, доменами, технологиями и контекстом роли.
+                  Большинство людей удивляются: 7–10 лет работы — это гораздо
+                  больше, чем помещается на одной странице.
                 </p>
               </div>
             </div>
@@ -234,12 +234,12 @@ function AhaMoments() {
               <Quote className="text-foreground/15 h-8 w-8" />
               <div className="space-y-2">
                 <h3 className="text-foreground font-medium text-lg">
-                  &quot;This resume — for this job — in 4 minutes?&quot;
+                  &laquo;Это резюме — под эту вакансию — за 4 минуты?&raquo;
                 </h3>
                 <p className="text-muted-foreground text-sm">
-                  Paste a job description, hit &quot;Generate.&quot; The PDF is
-                  ready. No copy-pasting between documents, no &quot;fine,
-                  I&apos;ll just send the generic version.&quot;
+                  Вставьте описание вакансии, нажмите &laquo;Сгенерировать&raquo;.
+                  PDF готов. Никакого копипейста между документами,
+                  никакого &laquo;ладно, отправлю универсальную версию&raquo;.
                 </p>
               </div>
             </div>
@@ -255,27 +255,27 @@ function AhaMoments() {
 const values = [
   {
     icon: Search,
-    title: 'Matching instead of guessing',
+    title: 'Подбор вместо угадывания',
     description:
-      'The system picks the most relevant atoms from your entire career for each specific job — no manual guesswork about what to include.',
+      'Система выбирает самые релевантные атомы из всей вашей карьеры под конкретную вакансию — никакого ручного перебора, что включить.',
   },
   {
     icon: Shield,
-    title: 'Bullet points that sound like you',
+    title: 'Буллеты, которые звучат как вы',
     description:
-      'AI suggests formulations in "action - result - metric" format using the job\'s terminology. Every bullet is grounded in your real data.',
+      'AI предлагает формулировки в формате «действие — результат — метрика» на языке вакансии. Каждый пункт основан на ваших реальных данных.',
   },
   {
     icon: Clock,
-    title: '5 minutes instead of an hour',
+    title: '5 минут вместо часа',
     description:
-      'At 10 applications per week, you save 8-9 hours. A full workday for interview prep, networking, or recovering.',
+      'При 10 откликах в неделю вы экономите 8–9 часов. Целый рабочий день на подготовку к собеседованиям, нетворкинг или отдых.',
   },
   {
     icon: Layers,
-    title: 'Your data, your control',
+    title: 'Ваши данные — ваш контроль',
     description:
-      'Works without sign-up using local browser storage. Sign in to sync to the cloud. Your career data is always exportable as JSON — no vendor lock-in.',
+      'Работает без регистрации в локальном хранилище браузера. Войдите, чтобы синхронизировать в облако. Карьерные данные всегда можно экспортировать в JSON — никакой привязки к платформе.',
   },
 ];
 
@@ -284,10 +284,10 @@ function ValuePropositions() {
     <section className="py-16">
       <div className="mx-auto max-w-5xl px-6">
         <h2 className="text-balance font-serif text-3xl font-medium sm:text-4xl">
-          What changes when your experience is data, not a document
+          Что меняется, когда ваш опыт — это данные, а не документ
         </h2>
         <p className="text-muted-foreground mt-4 text-balance max-w-xl">
-          Everything you need to build, send, and improve tailored resumes effortlessly.
+          Всё, что нужно, чтобы легко создавать, отправлять и улучшать адресные резюме.
         </p>
         <div className="mt-12 grid gap-3 sm:grid-cols-2">
           {values.map((v) => (
@@ -308,12 +308,12 @@ function ValuePropositions() {
 // ─── Section 7: "That's Me" ──────────────────────────────────────────────────
 
 const painPoints = [
-  'You got laid off, burned out, or want to level up — and you\'ve started actively searching.',
-  'You sent a "universal" CV and got rejected at screening — even though you know you have the experience.',
-  '"I have 8 years in product management, but the recruiter didn\'t even open my resume."',
-  '"I\'ve been applying for three weeks and my pipeline is empty — is it me?"',
-  'You spend Sunday evening reworking the same document for each of five job posts — and by the end you just send "good enough."',
-  'Your desktop has "CV_final_v3_avito_2_NEW.pdf" and you no longer remember which version went where.',
+  'Вас сократили, вы выгорели или хотите расти — и начали активный поиск.',
+  'Вы отправили «универсальное» резюме и получили отказ на скрининге — хотя точно знаете, что опыт есть.',
+  '«У меня 8 лет в продакт-менеджменте, но рекрутер даже не открыл моё резюме.»',
+  '«Откликаюсь три недели, а воронка пустая — может, дело во мне?»',
+  'Вы тратите воскресный вечер на переделку одного и того же документа под пять вакансий — а к концу просто отправляете «и так сойдёт».',
+  'На рабочем столе лежит «CV_final_v3_avito_2_NEW.pdf», и вы уже не помните, какая версия куда ушла.',
 ];
 
 function ThatsMe() {
@@ -322,16 +322,16 @@ function ThatsMe() {
       <div className="mx-auto max-w-5xl px-6">
         <div className="max-w-2xl">
           <h2 className="text-balance font-serif text-3xl font-medium sm:text-4xl">
-            Sound familiar?
+            Знакомо?
           </h2>
           <p className="text-muted-foreground mt-6 text-lg italic leading-relaxed">
-            You want to land an offer as fast as possible — at a company where your
-            experience actually matters? Or at least stop feeling like 10 years of
-            career equals &quot;not what we&apos;re looking for&quot;?
+            Хотите получить оффер как можно быстрее — в компании, где ваш
+            опыт действительно ценится? Или хотя бы перестать чувствовать,
+            что 10 лет карьеры = &laquo;нам не подходит&raquo;?
           </p>
         </div>
         <div className="mt-12 max-w-2xl">
-          <p className="text-foreground font-medium mb-6">This is about you if:</p>
+          <p className="text-foreground font-medium mb-6">Это про вас, если:</p>
           <div className="space-y-1">
             {painPoints.map((point, i) => (
               <div key={i} className="flex items-start gap-3 border-b border-border/50 py-3 last:border-0">
@@ -362,11 +362,11 @@ function StepRows({ steps }: { steps: Step[] }) {
           <div className="grid gap-4 sm:grid-cols-[140px_1fr_1fr]">
             <p className="text-foreground text-sm font-medium">{s.step}</p>
             <div>
-              <p className="text-muted-foreground text-xs font-medium uppercase tracking-wider mb-1">What you do</p>
+              <p className="text-muted-foreground text-xs font-medium uppercase tracking-wider mb-1">Что вы делаете</p>
               <p className="text-foreground text-sm">{s.youDo}</p>
             </div>
             <div>
-              <p className="text-muted-foreground text-xs font-medium uppercase tracking-wider mb-1">What you get</p>
+              <p className="text-muted-foreground text-xs font-medium uppercase tracking-wider mb-1">Что получаете</p>
               <p className="text-foreground text-sm">{s.youGet}</p>
             </div>
           </div>
@@ -377,20 +377,20 @@ function StepRows({ steps }: { steps: Step[] }) {
 }
 
 const coreJob1: Step[] = [
-  { step: '1. Inventory', youDo: 'Fill in manually or import a JSON file', youGet: 'A structured atom base: achievements, projects, roles — each with metrics, tech stack, and domains' },
-  { step: '2. Job analysis', youDo: 'Paste a job description', youGet: 'AI selects relevant atoms and rewrites them in the language of the posting' },
-  { step: '3. Match & assemble', youDo: 'Review and edit the generated resume inline', youGet: 'A tailored resume: right emphasis, terminology, block order — ready to download' },
-  { step: '4. PDF & send', youDo: 'Hit "Download"', youGet: 'Clean PDF via browser print. Ready to send' },
+  { step: '1. Инвентаризация', youDo: 'Заполните вручную или импортируйте JSON-файл', youGet: 'Структурированная база атомов: достижения, проекты, роли — каждый с метриками, технологиями и доменами' },
+  { step: '2. Анализ вакансии', youDo: 'Вставьте описание вакансии', youGet: 'AI выбирает релевантные атомы и переписывает их на языке вакансии' },
+  { step: '3. Подбор и сборка', youDo: 'Просмотрите и отредактируйте сгенерированное резюме', youGet: 'Адресное резюме: правильные акценты, терминология, порядок блоков — готово к скачиванию' },
+  { step: '4. PDF и отправка', youDo: 'Нажмите «Скачать»', youGet: 'Чистый PDF через печать браузера. Готов к отправке' },
 ];
 
 const coreJob2: Step[] = [
-  { step: 'Edit', youDo: 'Tweak bullet points, remove irrelevant entries', youGet: 'A polished resume that sounds like you, not like a template' },
-  { step: 'Iterate', youDo: 'Generate again with a different job description', youGet: 'Each resume is assembled fresh from your full atom base' },
+  { step: 'Редактирование', youDo: 'Подправьте буллеты, удалите нерелевантное', youGet: 'Отполированное резюме, которое звучит как вы, а не как шаблон' },
+  { step: 'Итерация', youDo: 'Сгенерируйте снова с другой вакансией', youGet: 'Каждое резюме собирается заново из всей базы атомов' },
 ];
 
 const coreJob3: Step[] = [
-  { step: 'Cloud sync', youDo: 'Sign in with GitHub or Google', youGet: 'Local data auto-migrates to your personal cloud database — access from any device' },
-  { step: 'Own your pipeline', youDo: 'Connect your own n8n webhook for AI generation', youGet: 'Full control: your API keys, your model choice, your data never stored on third-party servers' },
+  { step: 'Облачная синхр.', youDo: 'Войдите через GitHub или Google', youGet: 'Локальные данные автоматически мигрируют в персональную облачную базу — доступ с любого устройства' },
+  { step: 'Свой пайплайн', youDo: 'Подключите собственный n8n-вебхук для AI-генерации', youGet: 'Полный контроль: ваши API-ключи, ваша модель, данные не хранятся на сторонних серверах' },
 ];
 
 function HowItWorks() {
@@ -398,17 +398,17 @@ function HowItWorks() {
     <section className="py-16">
       <div className="mx-auto max-w-5xl px-6">
         <h2 className="text-balance font-serif text-3xl font-medium sm:text-4xl">
-          How it works
+          Как это работает
         </h2>
         <p className="text-muted-foreground mt-4 text-balance max-w-xl">
-          From chaos to a targeted resume in 4 steps.
+          От хаоса к адресному резюме за 4 шага.
         </p>
 
         <div className="mt-12 space-y-12">
           <div>
             <h3 className="font-medium mb-4 flex items-center gap-2">
               <FileText className="h-4 w-4" />
-              &quot;I need to quickly build a resume tailored to this specific role&quot;
+              &laquo;Мне нужно быстро собрать резюме под конкретную роль&raquo;
             </h3>
             <StepRows steps={coreJob1} />
           </div>
@@ -416,7 +416,7 @@ function HowItWorks() {
           <div>
             <h3 className="font-medium mb-4 flex items-center gap-2">
               <BarChart3 className="h-4 w-4" />
-              &quot;I need to polish the result before sending&quot;
+              &laquo;Хочу довести результат до идеала перед отправкой&raquo;
             </h3>
             <StepRows steps={coreJob2} />
           </div>
@@ -424,7 +424,7 @@ function HowItWorks() {
           <div>
             <h3 className="font-medium mb-4 flex items-center gap-2">
               <Repeat className="h-4 w-4" />
-              &quot;I want my data safe and under my control&quot;
+              &laquo;Хочу, чтобы мои данные были в безопасности и под моим контролем&raquo;
             </h3>
             <StepRows steps={coreJob3} />
           </div>
@@ -443,13 +443,13 @@ function Emotions() {
         <div className="grid gap-12 sm:grid-cols-2">
           <div>
             <h2 className="text-balance font-serif text-3xl font-medium">
-              How you&apos;ll feel
+              Что вы почувствуете
             </h2>
             <div className="mt-8 space-y-6">
               {[
-                { icon: Heart, label: 'Confidence', text: 'You know every application goes out with a resume that speaks the language of the job.' },
-                { icon: Eye, label: 'Control', text: 'You see your entire career structured and searchable. Every achievement tagged with skills, domains, and metrics. Job search becomes a managed process, not chaos.' },
-                { icon: Coffee, label: 'Calm', text: "You're not burning weekends on manual document surgery. There's time to prep for interviews, rest, recharge." },
+                { icon: Heart, label: 'Уверенность', text: 'Вы знаете, что каждый отклик уходит с резюме, которое говорит на языке вакансии.' },
+                { icon: Eye, label: 'Контроль', text: 'Вы видите всю карьеру структурированной и доступной для поиска. Каждое достижение размечено навыками, доменами и метриками. Поиск работы становится управляемым процессом, а не хаосом.' },
+                { icon: Coffee, label: 'Спокойствие', text: 'Вы не сжигаете выходные на ручную правку документов. Есть время подготовиться к собеседованиям, отдохнуть, восстановиться.' },
               ].map((item) => (
                 <div key={item.label} className="flex items-start gap-3">
                   <item.icon className="text-foreground h-5 w-5 mt-0.5 flex-shrink-0" />
@@ -463,13 +463,13 @@ function Emotions() {
           </div>
           <div>
             <h2 className="text-balance font-serif text-3xl font-medium">
-              What the result looks like
+              Как выглядит результат
             </h2>
             <div className="mt-8 space-y-6">
               {[
-                { label: 'You land an offer faster', text: 'Your screening conversion rate goes up when the resume actually hits the mark.' },
-                { label: 'You rebuild professional confidence', text: 'You see your full experience: 47 achievements, 12 domains, 8 years of growth. It\'s not "I don\'t qualify" — it\'s "I didn\'t highlight the right things."' },
-                { label: 'You spend energy on what matters', text: 'Interview prep, networking, growth — not fighting with Word and copy-paste.' },
+                { label: 'Вы получаете оффер быстрее', text: 'Конверсия на скрининге растёт, когда резюме действительно попадает в точку.' },
+                { label: 'Вы возвращаете профессиональную уверенность', text: 'Вы видите свой полный опыт: 47 достижений, 12 доменов, 8 лет роста. Дело не в «я не подхожу» — а в «я не подсветил нужное».' },
+                { label: 'Вы тратите энергию на то, что важно', text: 'Подготовка к собеседованиям, нетворкинг, развитие — а не борьба с Word и копипейстом.' },
               ].map((item) => (
                 <div key={item.label} className="flex items-start gap-3">
                   <Check className="text-foreground h-5 w-5 mt-0.5 flex-shrink-0" />
@@ -491,19 +491,19 @@ function Emotions() {
 
 const faqs = [
   {
-    question: '"I don\'t have time to fill in yet another tool"',
+    question: '«У меня нет времени заполнять ещё один инструмент»',
     answer:
-      'Use our AI prompt helper to convert any CV or career description into a structured JSON import. Or fill in data manually — the forms are quick. Initial inventory takes 15-30 minutes. After that, you just hit Generate.',
+      'Используйте AI-промпт, чтобы превратить любое резюме или описание карьеры в структурированный JSON для импорта. Или заполните данные вручную — формы быстрые. Первичная инвентаризация занимает 15–30 минут. После этого вы просто нажимаете «Сгенерировать».',
   },
   {
-    question: '"AI-generated text is obvious and generic"',
+    question: '«Тексты от AI выглядят шаблонно и неестественно»',
     answer:
-      'We don\'t generate text from thin air. Every bullet is grounded in your real data — metrics, projects, outcomes. AI helps with structure and terminology, but the content is yours.',
+      'Мы не генерируем текст из воздуха. Каждый буллет основан на ваших реальных данных — метриках, проектах, результатах. AI помогает со структурой и терминологией, но контент — ваш.',
   },
   {
-    question: '"I need both English and Russian versions"',
+    question: '«Мне нужны версии и на английском, и на русском»',
     answer:
-      'Enter your atoms in any language. Generate resumes in the language of the job posting — the AI adapts terminology automatically. Works great for bilingual job searches.',
+      'Вводите атомы на любом языке. Генерируйте резюме на языке вакансии — AI адаптирует терминологию автоматически. Отлично работает для двуязычного поиска работы.',
   },
 ];
 
@@ -513,10 +513,10 @@ function LoweringBarriers() {
       <div className="mx-auto max-w-5xl px-6">
         <div className="max-w-2xl">
           <h2 className="text-balance font-serif text-3xl font-medium sm:text-4xl">
-            &quot;But...&quot;
+            &laquo;Но...&raquo;
           </h2>
           <p className="text-muted-foreground mt-4 text-balance">
-            Common concerns, honest answers.
+            Частые сомнения — честные ответы.
           </p>
         </div>
         <div className="mt-12 max-w-2xl space-y-px">
@@ -545,27 +545,27 @@ function LoweringBarriers() {
 const competitors = [
   {
     label: 'Google Docs',
-    quote: '"I already tailor my resume in Google Docs"',
+    quote: '«Я и так адаптирую резюме в Google Docs»',
     answer:
-      'Manual editing works for 2-3 applications. By the 10th, you\'re exhausted — you start sending the generic version and get rejected. CV CMS makes the 10th iteration as fast as the first.',
-    has: ['Manual editing', 'Free', 'Familiar'],
-    misses: ['No structured data', 'No version tracking', 'No job matching'],
+      'Ручное редактирование работает на 2–3 отклика. К десятому вы устаёте — начинаете отправлять универсальную версию и получаете отказы. CV CMS делает десятую итерацию такой же быстрой, как первую.',
+    has: ['Ручное редактирование', 'Бесплатно', 'Привычно'],
+    misses: ['Нет структурированных данных', 'Нет версионности', 'Нет подбора под вакансию'],
   },
   {
     label: 'Teal / Jobscan / Kickresume',
-    quote: '"There\'s Teal / Jobscan / Kickresume"',
+    quote: '«Есть же Teal / Jobscan / Kickresume»',
     answer:
-      'They polish an existing PDF — highlight keywords, check ATS compatibility. But they don\'t store your experience as structured data. You can\'t reassemble a document from atoms, can\'t track versions, can\'t run a retrospective. It\'s cosmetics, not architecture.',
-    has: ['ATS check', 'Keyword scan', 'Templates'],
-    misses: ['No atomic data', 'No reassembly', 'No retrospective'],
+      'Они полируют готовый PDF — подсвечивают ключевые слова, проверяют ATS-совместимость. Но не хранят ваш опыт как структурированные данные. Нельзя пересобрать документ из атомов, отследить версии, провести ретроспективу. Это косметика, а не архитектура.',
+    has: ['Проверка ATS', 'Анализ ключевых слов', 'Шаблоны'],
+    misses: ['Нет атомарных данных', 'Нет пересборки', 'Нет ретроспективы'],
   },
   {
     label: 'ChatGPT',
-    quote: '"ChatGPT will rewrite my resume for free"',
+    quote: '«ChatGPT перепишет резюме бесплатно»',
     answer:
-      'An LLM doesn\'t know your real experience — it hallucinates metrics and embellishes. After 3 iterations you\'ll have text you can\'t defend in an interview. CV CMS generates only from your verified data — not a single made-up number.',
-    has: ['Fast', 'Free', 'Flexible'],
-    misses: ['Hallucinations', 'No real data', 'Not defensible'],
+      'LLM не знает ваш реальный опыт — он выдумывает метрики и приукрашивает. После 3 итераций у вас будет текст, который невозможно защитить на собеседовании. CV CMS генерирует только из ваших проверенных данных — ни одной выдуманной цифры.',
+    has: ['Быстро', 'Бесплатно', 'Гибко'],
+    misses: ['Галлюцинации', 'Нет реальных данных', 'Не защитишь на интервью'],
   },
 ];
 
@@ -574,10 +574,10 @@ function Competition() {
     <section className="py-16">
       <div className="mx-auto max-w-5xl px-6">
         <h2 className="text-balance font-serif text-3xl font-medium sm:text-4xl">
-          Why not [alternative]?
+          Почему не [альтернатива]?
         </h2>
         <p className="text-muted-foreground mt-4 text-balance max-w-xl">
-          Find out how CV CMS compares.
+          Узнайте, чем CV CMS отличается.
         </p>
         <div className="mt-12 grid gap-3 sm:grid-cols-3">
           {competitors.map((c) => (
@@ -617,22 +617,22 @@ function FinalCta() {
       <div className="mx-auto max-w-5xl px-6">
         <div className="text-center">
           <h2 className="text-balance font-serif text-3xl font-medium sm:text-4xl">
-            Your next application can be different
+            Ваш следующий отклик может быть другим
           </h2>
           <p className="text-muted-foreground mx-auto mt-4 max-w-md text-balance">
-            No account. No credit card. No friction. Start entering your
-            experience, import your data, and generate your first tailored
-            resume. 5 minutes to your first PDF.
+            Без аккаунта. Без карты. Без барьеров. Начните вводить свой
+            опыт, импортируйте данные и сгенерируйте первое адресное
+            резюме. 5 минут до первого PDF.
           </p>
           <div className="mt-6 flex flex-wrap justify-center gap-3">
             <Button asChild className="pr-1.5">
               <Link href="/app">
-                <span>Try Free — No Sign-Up Required</span>
+                <span>Попробовать бесплатно — без регистрации</span>
                 <ChevronRight className="opacity-50" />
               </Link>
             </Button>
             <Button variant="secondary" asChild>
-              <Link href="/signin">Sign In</Link>
+              <Link href="/signin">Войти</Link>
             </Button>
           </div>
         </div>
