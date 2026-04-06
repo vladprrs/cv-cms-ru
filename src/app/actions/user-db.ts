@@ -40,18 +40,56 @@ export async function provisionUserDatabase() {
   }
 
   // Create record with 'creating' status
+  // UNIQUE constraint on user_id prevents duplicate records from concurrent requests
   const recordId = crypto.randomUUID();
   const now = new Date().toISOString();
-  await adminDb.insert(userDatabases).values({
-    id: recordId,
-    userId,
-    tursoDbName: 'pending',
-    tursoDbUrl: 'pending',
-    tursoAuthToken: 'pending',
-    status: 'creating',
-    createdAt: now,
-    updatedAt: now,
-  });
+  try {
+    await adminDb.insert(userDatabases).values({
+      id: recordId,
+      userId,
+      tursoDbName: 'pending',
+      tursoDbUrl: 'pending',
+      tursoAuthToken: 'pending',
+      status: 'creating',
+      createdAt: now,
+      updatedAt: now,
+    });
+  } catch (insertError: unknown) {
+    // UNIQUE constraint violation — another concurrent request already created the record
+    const message = insertError instanceof Error ? insertError.message : '';
+    if (message.includes('UNIQUE constraint failed')) {
+      const concurrent = await adminDb
+        .select()
+        .from(userDatabases)
+        .where(eq(userDatabases.userId, userId))
+        .limit(1);
+
+      if (concurrent[0]?.status === 'ready') {
+        return concurrent[0];
+      }
+
+      // Other request is still provisioning — wait briefly and re-check
+      if (concurrent[0]?.status === 'creating' || concurrent[0]?.status === 'migrating') {
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+        const retried = await adminDb
+          .select()
+          .from(userDatabases)
+          .where(eq(userDatabases.userId, userId))
+          .limit(1);
+        if (retried[0]) return retried[0];
+      }
+
+      // Error state — delete and let caller retry
+      if (concurrent[0]?.status === 'error') {
+        await adminDb
+          .delete(userDatabases)
+          .where(eq(userDatabases.id, concurrent[0].id));
+      }
+
+      throw new Error('Database provisioning in progress by another request');
+    }
+    throw insertError;
+  }
 
   try {
     // Create Turso database
