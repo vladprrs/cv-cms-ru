@@ -52,6 +52,74 @@ export const verificationTokens = sqliteTable(
 
 // ============ Multi-Tenant Extension ============
 
+// ============ Credits & Payments ============
+
+export const creditBalances = sqliteTable('credit_balances', {
+  id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),
+  userId: text('user_id')
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' })
+    .unique(),
+  balance: integer('balance').notNull().default(0),
+  updatedAt: text('updated_at')
+    .notNull()
+    .$defaultFn(() => new Date().toISOString()),
+});
+
+export const purchases = sqliteTable('purchases', {
+  id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),
+  userId: text('user_id')
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' }),
+  packId: text('pack_id').notNull(),
+  credits: integer('credits').notNull(),
+  priceRub: integer('price_rub').notNull(),
+  yookassaPaymentId: text('yookassa_payment_id').unique(),
+  status: text('status', {
+    enum: ['pending', 'confirmed', 'failed'],
+  })
+    .notNull()
+    .default('pending'),
+  createdAt: text('created_at')
+    .notNull()
+    .$defaultFn(() => new Date().toISOString()),
+  confirmedAt: text('confirmed_at'),
+});
+
+export const usageRecords = sqliteTable('usage_records', {
+  id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),
+  userId: text('user_id')
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' }),
+  status: text('status', {
+    enum: ['success', 'failed', 'refunded'],
+  }).notNull(),
+  createdAt: text('created_at')
+    .notNull()
+    .$defaultFn(() => new Date().toISOString()),
+});
+
+// ============ Multi-Tenant Extension ============
+
+export const creditAdjustments = sqliteTable('credit_adjustments', {
+  id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),
+  adminUserId: text('admin_user_id')
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' }),
+  targetUserId: text('target_user_id')
+    .notNull()
+    .references(() => users.id, { onDelete: 'cascade' }),
+  amount: integer('amount').notNull(),
+  previousBalance: integer('previous_balance').notNull(),
+  newBalance: integer('new_balance').notNull(),
+  reason: text('reason').notNull(),
+  createdAt: text('created_at')
+    .notNull()
+    .$defaultFn(() => new Date().toISOString()),
+});
+
+// ============ Multi-Tenant Extension ============
+
 export const userDatabases = sqliteTable('user_databases', {
   id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),
   userId: text('user_id')
