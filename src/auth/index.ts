@@ -58,7 +58,7 @@ function createAuth() {
 
         // Refresh consent status on sign-in and periodically
         const userId = token.userId as string | undefined;
-        if (userId && (trigger === 'signIn' || trigger === 'signUp' || !token.consentCheckedAt || Date.now() - (token.consentCheckedAt as number) > 5 * 60 * 1000)) {
+        if (userId && (trigger === 'signIn' || trigger === 'signUp' || !token.consentCheckedAt || Date.now() - (token.consentCheckedAt as number) > 5 * 60 * 1000 || !token.hasConsent)) {
           try {
             const db = getAdminDb();
             const latest = await db
