@@ -52,9 +52,13 @@ export default function RootLayout({
               {children}
             </div>
             <footer className="py-4 text-center text-xs text-muted-foreground">
-              <a href="/privacy" className="underline hover:text-foreground">Политика конфиденциальности</a>
+              <a href="/pricing" className="underline hover:text-foreground">Услуги и цены</a>
               <span className="mx-2">&middot;</span>
-              <a href="/terms" className="underline hover:text-foreground">Условия использования</a>
+              <a href="/terms" className="underline hover:text-foreground">Оферта</a>
+              <span className="mx-2">&middot;</span>
+              <a href="/privacy" className="underline hover:text-foreground">Конфиденциальность</a>
+              <span className="mx-2">&middot;</span>
+              <a href="/contacts" className="underline hover:text-foreground">Контакты</a>
               <span className="mx-2">&middot;</span>
               <a href="https://github.com/vladpr-com/cv-cms" target="_blank" rel="noopener noreferrer" className="underline hover:text-foreground">GitHub</a>
             </footer>

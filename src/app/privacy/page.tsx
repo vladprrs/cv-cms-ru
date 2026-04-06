@@ -8,14 +8,14 @@ export default function PrivacyPolicyPage() {
       <div className="max-w-3xl mx-auto space-y-8">
         <div className="flex items-center gap-4">
           <Button variant="outline" size="icon" asChild>
-            <Link href="/app">
+            <Link href="/">
               <ArrowLeft className="h-4 w-4" />
             </Link>
           </Button>
-          <h1 className="text-2xl font-bold tracking-tight">Privacy Policy</h1>
+          <h1 className="text-2xl font-bold tracking-tight">Политика конфиденциальности</h1>
         </div>
 
-        <p className="text-sm text-muted-foreground">Last updated: February 25, 2026</p>
+        <p className="text-sm text-muted-foreground">Обновлено: 6 апреля 2026 г.</p>
 
         <div className="prose prose-sm dark:prose-invert max-w-none space-y-6">
           <section className="space-y-3">
@@ -110,10 +110,14 @@ export default function PrivacyPolicyPage() {
           </section>
 
           <section className="space-y-3">
-            <h2 className="text-lg font-semibold">7. Contact</h2>
+            <h2 className="text-lg font-semibold">7. Контакты</h2>
             <p className="text-sm text-muted-foreground leading-relaxed">
-              If you have questions about this privacy policy, please contact us through the
-              project&apos;s GitHub repository.
+              По вопросам, связанным с обработкой персональных данных, обращайтесь
+              по электронной почте{' '}
+              <a href="mailto:i@vladpr.com" className="underline hover:text-foreground">
+                i@vladpr.com
+              </a>
+              .
             </p>
           </section>
         </div>
