@@ -145,6 +145,7 @@ export const userDatabases = sqliteTable('user_databases', {
   id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),
   userId: text('user_id')
     .notNull()
+    .unique()
     .references(() => users.id, { onDelete: 'cascade' }),
   tursoDbName: text('turso_db_name').notNull(),
   tursoDbUrl: text('turso_db_url').notNull(),
