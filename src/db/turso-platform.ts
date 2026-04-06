@@ -119,3 +119,22 @@ export async function createUserDatabase(userId: string): Promise<CreateDatabase
 
   return { dbName, dbUrl, authToken, readOnlyToken };
 }
+
+/**
+ * Delete a Turso database by name.
+ * Used for account deletion (152-FZ compliance).
+ */
+export async function deleteUserDatabase(dbName: string): Promise<void> {
+  const org = getOrgName();
+  const headers = getApiHeaders();
+
+  const res = await fetch(
+    `${TURSO_API_BASE}/organizations/${org}/databases/${dbName}`,
+    { method: 'DELETE', headers }
+  );
+
+  if (!res.ok && res.status !== 404) {
+    const errorBody = await res.text();
+    throw new Error(`Failed to delete database ${dbName}: ${res.status} ${errorBody}`);
+  }
+}

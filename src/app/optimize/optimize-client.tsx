@@ -11,9 +11,19 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { ArrowLeft, FileText, Loader2, Printer, Settings, X } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { ArrowLeft, FileText, Loader2, Printer, Settings, X, Coins, Wifi, WifiOff, ShieldAlert } from 'lucide-react';
 import type { ResumeData, ResumeContacts } from '@/app/actions/optimize';
 import { useDataLayer } from '@/contexts/data-context';
+import { CURRENT_CONSENT_VERSION, CONSENT_SCOPES } from '@/lib/consent';
 
 const authEnabled = process.env.NEXT_PUBLIC_AUTH_ENABLED === 'true';
 
@@ -341,6 +351,8 @@ async function generateResumeLocal(
 
 // ─── Main Page ───────────────────────────────────────────────────────────────
 
+type GenerationMode = 'service' | 'webhook';
+
 export function OptimizeClient() {
   const { dataLayer, mode, isReady } = useDataLayer();
 
@@ -350,7 +362,59 @@ export function OptimizeClient() {
   const [error, setError] = useState<string | null>(null);
   const resumeRef = useRef<HTMLDivElement>(null);
 
+  // Service mode state
+  const [creditBalance, setCreditBalance] = useState<number | null>(null);
+  const [serviceAvailable, setServiceAvailable] = useState<boolean | null>(null);
+  const [generationMode, setGenerationMode] = useState<GenerationMode>('webhook');
+
+  // Data sharing consent state (152-FZ compliance)
+  const [hasDataSharingConsent, setHasDataSharingConsent] = useState<boolean | null>(null);
+  const [showDataSharingNotice, setShowDataSharingNotice] = useState(false);
+  const [pendingGenerate, setPendingGenerate] = useState(false);
+
   const webhookUrl = typeof window !== 'undefined' ? localStorage.getItem('n8n-webhook-url') : null;
+  const isAuthenticated = mode === 'authenticated' && authEnabled;
+
+  // Fetch credit balance and service status for authenticated users
+  useEffect(() => {
+    if (!isAuthenticated) return;
+
+    async function loadServiceInfo() {
+      const { getCreditBalance, checkServiceStatus } = await import('@/app/actions/credits');
+      const [balanceResult, statusResult] = await Promise.all([
+        getCreditBalance(),
+        checkServiceStatus(),
+      ]);
+
+      if ('balance' in balanceResult) {
+        setCreditBalance(balanceResult.balance);
+      }
+      setServiceAvailable(statusResult.available);
+
+      // Auto-select mode: prefer service if credits available, else webhook
+      if ('balance' in balanceResult && balanceResult.balance > 0 && statusResult.available) {
+        setGenerationMode('service');
+      } else {
+        setGenerationMode('webhook');
+      }
+    }
+
+    loadServiceInfo();
+  }, [isAuthenticated]);
+
+  // Check data sharing consent
+  useEffect(() => {
+    if (!isAuthenticated) {
+      setHasDataSharingConsent(true); // Anonymous users don't need server consent
+      return;
+    }
+
+    import('@/app/actions/consent').then(({ checkConsent }) =>
+      checkConsent(CONSENT_SCOPES.THIRD_PARTY_DATA_SHARING).then((status) => {
+        setHasDataSharingConsent(status.hasConsent);
+      })
+    );
+  }, [isAuthenticated]);
 
   // Warn before leaving if resume has been generated
   useEffect(() => {
@@ -363,8 +427,14 @@ export function OptimizeClient() {
     return () => window.removeEventListener('beforeunload', handleBeforeUnload);
   }, [resumeData]);
 
+  const hasCredits = creditBalance !== null && creditBalance > 0;
+  const hasWebhook = !!webhookUrl;
+  const canGenerate = generationMode === 'service'
+    ? hasCredits && serviceAvailable === true
+    : hasWebhook;
+
   async function handleGenerate() {
-    if (!webhookUrl) {
+    if (generationMode === 'webhook' && !webhookUrl) {
       setError('No webhook URL configured. Please set it in Settings.');
       return;
     }
@@ -374,24 +444,45 @@ export function OptimizeClient() {
       return;
     }
 
+    // Show data sharing notice if user hasn't consented yet
+    if (isAuthenticated && hasDataSharingConsent === false) {
+      setPendingGenerate(true);
+      setShowDataSharingNotice(true);
+      return;
+    }
+
     setIsGenerating(true);
     setError(null);
 
     let result: { data?: ResumeData; error?: string };
 
-    if (mode === 'authenticated' && authEnabled) {
-      // Use server action for authenticated mode
+    if (isAuthenticated) {
       const { generateResume } = await import('@/app/actions/optimize');
-      result = await generateResume(vacancyText, webhookUrl);
+      if (generationMode === 'service') {
+        // Service mode — no webhookUrl passed
+        result = await generateResume(vacancyText);
+      } else {
+        // Own webhook mode
+        result = await generateResume(vacancyText, webhookUrl!);
+      }
     } else {
-      // Use client-side generation for anonymous/local mode
-      result = await generateResumeLocal(vacancyText, webhookUrl, dataLayer);
+      // Anonymous/local mode — always uses own webhook
+      result = await generateResumeLocal(vacancyText, webhookUrl!, dataLayer);
     }
 
     if (result.error) {
       setError(result.error);
     } else if (result.data) {
       setResumeData(result.data);
+    }
+
+    // Refresh credit balance after generation
+    if (isAuthenticated && generationMode === 'service') {
+      const { getCreditBalance } = await import('@/app/actions/credits');
+      const balanceResult = await getCreditBalance();
+      if ('balance' in balanceResult) {
+        setCreditBalance(balanceResult.balance);
+      }
     }
 
     setIsGenerating(false);
@@ -528,7 +619,73 @@ export function OptimizeClient() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Left: Input */}
           <div className="space-y-4">
-            {!webhookUrl && (
+            {/* Service mode / webhook mode selection for authenticated users */}
+            {isAuthenticated && (
+              <>
+                {/* No credits and no webhook — prompt to buy or configure */}
+                {!hasCredits && !hasWebhook && (
+                  <Alert>
+                    <Coins className="h-4 w-4" />
+                    <AlertDescription>
+                      No optimization credits and no webhook configured.{' '}
+                      <Link href="/settings" className="underline font-medium">
+                        Buy a credit pack
+                      </Link>{' '}
+                      or{' '}
+                      <Link href="/settings" className="underline font-medium">
+                        configure your n8n webhook
+                      </Link>{' '}
+                      in Settings.
+                    </AlertDescription>
+                  </Alert>
+                )}
+
+                {/* Service unavailable warning */}
+                {hasCredits && serviceAvailable === false && (
+                  <Alert>
+                    <WifiOff className="h-4 w-4" />
+                    <AlertDescription>
+                      Service mode is temporarily unavailable. Your credits are safe.
+                      {hasWebhook && ' You can still use your own webhook.'}
+                    </AlertDescription>
+                  </Alert>
+                )}
+
+                {/* Mode toggle when user has both options */}
+                {(hasCredits || hasWebhook) && (
+                  <div className="flex items-center gap-3">
+                    {hasCredits && serviceAvailable && (
+                      <Button
+                        variant={generationMode === 'service' ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => setGenerationMode('service')}
+                        className="gap-2"
+                      >
+                        <Wifi className="h-3.5 w-3.5" />
+                        Service
+                        <Badge variant="secondary" className="text-xs ml-1">
+                          {creditBalance} cr.
+                        </Badge>
+                      </Button>
+                    )}
+                    {hasWebhook && (
+                      <Button
+                        variant={generationMode === 'webhook' ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => setGenerationMode('webhook')}
+                        className="gap-2"
+                      >
+                        <Settings className="h-3.5 w-3.5" />
+                        Own webhook
+                      </Button>
+                    )}
+                  </div>
+                )}
+              </>
+            )}
+
+            {/* Anonymous users: webhook-only message */}
+            {!isAuthenticated && !hasWebhook && (
               <Alert>
                 <Settings className="h-4 w-4" />
                 <AlertDescription>
@@ -540,6 +697,7 @@ export function OptimizeClient() {
                 </AlertDescription>
               </Alert>
             )}
+
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-base">
@@ -561,7 +719,7 @@ export function OptimizeClient() {
                   </span>
                   <Button
                     onClick={handleGenerate}
-                    disabled={isGenerating || vacancyText.length < 50}
+                    disabled={isGenerating || vacancyText.length < 50 || !canGenerate}
                   >
                     {isGenerating ? (
                       <>
@@ -611,6 +769,67 @@ export function OptimizeClient() {
             )}
           </div>
         </div>
+
+        {/* Data Sharing Consent Dialog (152-FZ) */}
+        <Dialog open={showDataSharingNotice} onOpenChange={setShowDataSharingNotice}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle className="flex items-center gap-2">
+                <ShieldAlert className="h-5 w-5" />
+                Передача данных третьему лицу
+              </DialogTitle>
+              <DialogDescription asChild>
+                <div className="space-y-3 pt-2">
+                  <p>
+                    Для генерации резюме ваши карьерные данные (места работы, достижения, навыки)
+                    будут отправлены на внешний AI-сервис для обработки.
+                  </p>
+                  <p>
+                    <strong>Персональные контактные данные</strong> (ФИО, email, телефон, ссылки)
+                    <strong> не передаются</strong> — они добавляются в резюме на стороне сервера
+                    после получения ответа от AI.
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    Нажимая &laquo;Согласен&raquo;, вы даёте согласие на передачу карьерных данных
+                    третьему лицу в соответствии со статьёй 6 152-ФЗ.
+                  </p>
+                </div>
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setShowDataSharingNotice(false);
+                  setPendingGenerate(false);
+                }}
+              >
+                Отмена
+              </Button>
+              <Button
+                onClick={async () => {
+                  // Record consent
+                  const { recordConsent } = await import('@/app/actions/consent');
+                  await recordConsent(
+                    CURRENT_CONSENT_VERSION,
+                    CONSENT_SCOPES.THIRD_PARTY_DATA_SHARING,
+                  );
+                  setHasDataSharingConsent(true);
+                  setShowDataSharingNotice(false);
+
+                  // Continue with generation if it was pending
+                  if (pendingGenerate) {
+                    setPendingGenerate(false);
+                    // Trigger generation
+                    handleGenerate();
+                  }
+                }}
+              >
+                Согласен
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Suspense } from 'react';
 import Link from 'next/link';
@@ -12,6 +13,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { ConsentCheckbox } from '@/components/consent/consent-checkbox';
 
 const errorMessages: Record<string, string> = {
   OAuthAccountNotLinked:
@@ -59,6 +61,15 @@ function SignInContent() {
     ? errorMessages[error] || errorMessages.Default
     : null;
 
+  const [consented, setConsented] = useState(false);
+
+  const handleSignIn = (provider: string) => {
+    if (!consented) return;
+    // Store consent intent in sessionStorage — will be recorded after OAuth callback
+    sessionStorage.setItem('pendingConsent', 'true');
+    signIn(provider, { callbackUrl: '/app' });
+  };
+
   return (
     <div className="flex-1 bg-background flex items-center justify-center p-4">
       <div className="w-full max-w-sm space-y-6">
@@ -74,23 +85,36 @@ function SignInContent() {
               Choose a provider to sign in to your account
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-3">
-            <Button
-              variant="outline"
-              className="w-full gap-2"
-              onClick={() => signIn('github', { callbackUrl: '/app' })}
-            >
-              <GitHubIcon className="h-5 w-5" />
-              Continue with GitHub
-            </Button>
-            <Button
-              variant="outline"
-              className="w-full gap-2"
-              onClick={() => signIn('google', { callbackUrl: '/app' })}
-            >
-              <GoogleIcon className="h-5 w-5" />
-              Continue with Google
-            </Button>
+          <CardContent className="space-y-4">
+            <ConsentCheckbox
+              checked={consented}
+              onCheckedChange={setConsented}
+            />
+            <div className="space-y-3">
+              <Button
+                variant="outline"
+                className="w-full gap-2"
+                disabled={!consented}
+                onClick={() => handleSignIn('github')}
+              >
+                <GitHubIcon className="h-5 w-5" />
+                Continue with GitHub
+              </Button>
+              <Button
+                variant="outline"
+                className="w-full gap-2"
+                disabled={!consented}
+                onClick={() => handleSignIn('google')}
+              >
+                <GoogleIcon className="h-5 w-5" />
+                Continue with Google
+              </Button>
+            </div>
+            {!consented && (
+              <p className="text-xs text-muted-foreground text-center">
+                Для входа необходимо дать согласие на обработку персональных данных
+              </p>
+            )}
           </CardContent>
         </Card>
 

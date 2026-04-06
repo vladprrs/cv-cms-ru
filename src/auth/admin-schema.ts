@@ -1,4 +1,4 @@
-import { sqliteTable, text, integer, primaryKey } from 'drizzle-orm/sqlite-core';
+import { sqliteTable, text, integer, primaryKey, index } from 'drizzle-orm/sqlite-core';
 
 // ============ Auth.js Standard Tables ============
 
@@ -117,6 +117,27 @@ export const creditAdjustments = sqliteTable('credit_adjustments', {
     .notNull()
     .$defaultFn(() => new Date().toISOString()),
 });
+
+// ============ Consent Records (152-FZ Compliance) ============
+
+export const consents = sqliteTable(
+  'consents',
+  {
+    id: text('id').primaryKey().$defaultFn(() => crypto.randomUUID()),
+    userId: text('user_id')
+      .notNull()
+      .references(() => users.id),
+    consentVersion: text('consent_version').notNull(),
+    scope: text('scope').notNull(),
+    consentedAt: text('consented_at')
+      .notNull()
+      .$defaultFn(() => new Date().toISOString()),
+    withdrawnAt: text('withdrawn_at'),
+  },
+  (table) => [
+    index('consents_user_scope_idx').on(table.userId, table.scope),
+  ]
+);
 
 // ============ Multi-Tenant Extension ============
 
