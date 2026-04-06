@@ -29,7 +29,7 @@ export interface ResumeData {
 
 export async function generateResume(
   vacancyText: string,
-  webhookUrl: string,
+  webhookUrl?: string,
 ): Promise<{ data?: ResumeData; error?: string }> {
   if (!isAuthEnabled()) {
     return { error: 'Auth not configured — use client-side generation' };
@@ -45,10 +45,34 @@ export async function generateResume(
     return { error: 'Job description must be at least 50 characters' };
   }
 
-  try {
-    new URL(webhookUrl);
-  } catch {
-    return { error: 'Invalid webhook URL' };
+  // Determine which endpoint to use
+  const isServiceMode = !webhookUrl;
+  let targetUrl: string;
+
+  if (isServiceMode) {
+    const serviceUrl = process.env.SERVICE_WEBHOOK_URL;
+    if (!serviceUrl) {
+      return { error: 'Service endpoint not configured' };
+    }
+    targetUrl = serviceUrl;
+  } else {
+    try {
+      new URL(webhookUrl);
+    } catch {
+      return { error: 'Invalid webhook URL' };
+    }
+    targetUrl = webhookUrl;
+  }
+
+  // Consume credit for service mode
+  let usageRecordId: string | undefined;
+  if (isServiceMode) {
+    const { consumeCredit } = await import('@/app/actions/credits');
+    const creditResult = await consumeCredit();
+    if (!creditResult.success) {
+      return { error: creditResult.error };
+    }
+    usageRecordId = creditResult.usageRecordId;
   }
 
   // Fetch all user data server-side and send it directly to the webhook
@@ -85,7 +109,7 @@ export async function generateResume(
   };
 
   try {
-    const response = await fetch(webhookUrl, {
+    const response = await fetch(targetUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -97,6 +121,13 @@ export async function generateResume(
     if (!response.ok) {
       const errorBody = await response.text();
       console.error('n8n webhook error:', response.status, errorBody);
+
+      // Refund credit on service error
+      if (isServiceMode && usageRecordId) {
+        const { refundCredit } = await import('@/app/actions/credits');
+        await refundCredit(usageRecordId);
+      }
+
       return { error: 'Failed to generate resume. Please try again.' };
     }
 
@@ -122,6 +153,11 @@ export async function generateResume(
 
     // Basic shape validation
     if (!resumeData.name || !resumeData.experience) {
+      // Refund credit on invalid response
+      if (isServiceMode && usageRecordId) {
+        const { refundCredit } = await import('@/app/actions/credits');
+        await refundCredit(usageRecordId);
+      }
       return { error: 'Invalid resume data received from AI agent' };
     }
 
@@ -142,6 +178,13 @@ export async function generateResume(
     return { data: resumeData };
   } catch (err) {
     console.error('Resume generation error:', err);
+
+    // Refund credit on any error
+    if (isServiceMode && usageRecordId) {
+      const { refundCredit } = await import('@/app/actions/credits');
+      await refundCredit(usageRecordId);
+    }
+
     return { error: 'Failed to generate resume. Please try again.' };
   }
 }

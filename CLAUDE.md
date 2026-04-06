@@ -79,8 +79,13 @@ Three tables in `src/db/schema.ts`:
 
 - `src/app/actions.ts` — Server Actions with `getDataLayer()` helper for session-based DB routing
 - `src/app/actions/user-db.ts` — User DB provisioning, info retrieval, data migration
-- `src/app/actions/optimize.ts` — `generateResume()` server action: calls n8n webhook, returns structured JSON resume; injects contacts from profile DB (not LLM)
+- `src/app/actions/optimize.ts` — `generateResume(vacancyText, webhookUrl?)` server action: when webhookUrl omitted uses service mode (credits), otherwise calls user's webhook; injects contacts from profile DB (not LLM)
+- `src/app/actions/credits.ts` — Credit balance CRUD: `getCreditBalance()`, `consumeCredit()`, `refundCredit()`, `checkServiceStatus()`
+- `src/app/actions/payments.ts` — YooKassa payment: `createPayment(packId)`, `getPurchaseStatus(purchaseId)`
+- `src/app/api/payments/yookassa/webhook/route.ts` — YooKassa webhook handler: confirms/cancels purchases, credits balance
 - `src/app/optimize/page.tsx` — Resume optimizer page: vacancy input, AI-generated resume preview, inline editing, PDF export
+- `src/lib/credits.ts` — Pack catalog config (PACKS constant), PackId type, Zod schema
+- `src/lib/yookassa.ts` — YooKassa SDK wrapper (PaymentsApi), webhook payload Zod schema
 - `src/lib/data-layer/` — DataLayer interface + 3 implementations
 - `src/auth/index.ts` — Auth.js config (providers, adapter, callbacks)
 - `src/auth/admin-schema.ts` — Admin DB Drizzle schema
@@ -161,3 +166,14 @@ Note: The n8n webhook URL is stored in the user's browser (localStorage key: `n8
 - Branch naming: `feature/*`, `bugfix/*`, `hotfix/*`
 - Commits: Conventional Commits format (`feat(scope): message`)
 - PRs to `main` → auto-deploys to Vercel production
+
+## Active Technologies
+- TypeScript (Next.js 16 App Router) + Next.js 16, Auth.js v5, Drizzle ORM, @yookassa/sdk (NEW), Zod, shadcn/ui (001-service-resume-subscription)
+- Admin DB (Turso/libSQL) — new tables for credits, purchases, usage records (001-service-resume-subscription)
+- TypeScript 5.x (Next.js 16 App Router) + Next.js 16, Auth.js v5, Drizzle ORM, shadcn/ui, lucide-react, Zod (002-admin-panel)
+- Turso (libSQL) admin database via `getAdminDb()` singleton (002-admin-panel)
+- TypeScript 5.x (Next.js 16 App Router) + Next.js 16, Auth.js v5 (next-auth), Drizzle ORM, shadcn/ui, Zod (003-pd-152fz-compliance)
+- Turso (libSQL) — admin DB + per-user DBs; IndexedDB (anonymous); localStorage (webhook URL, theme) (003-pd-152fz-compliance)
+
+## Recent Changes
+- 001-service-resume-subscription: Added TypeScript (Next.js 16 App Router) + Next.js 16, Auth.js v5, Drizzle ORM, @yookassa/sdk (NEW), Zod, shadcn/ui
