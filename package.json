@@ -20,6 +20,7 @@
     "@hookform/resolvers": "^5.2.2",
     "@libsql/client": "^0.17.0",
     "@tanstack/react-query": "^5.90.20",
+    "@yookassa/sdk": "^0.0.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "dexie": "^4.3.0",
