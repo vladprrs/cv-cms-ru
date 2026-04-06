@@ -51,7 +51,13 @@ import {
   Cloud,
   Database,
   User,
+  Coins,
+  ShoppingCart,
+  Loader2,
+  Clock,
+  UserX,
 } from 'lucide-react';
+import { PACKS } from '@/lib/credits';
 
 type Theme = 'light' | 'dark' | 'system';
 
@@ -72,6 +78,18 @@ export default function SettingsPage() {
   const [webhookUrl, setWebhookUrl] = useState('');
   const [webhookSaved, setWebhookSaved] = useState(false);
 
+  // Account deletion state
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isExportingAccount, setIsExportingAccount] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
+
+  // Credits state
+  const [creditBalance, setCreditBalance] = useState<number | null>(null);
+  const [creditsLoading, setCreditsLoading] = useState(false);
+  const [purchaseLoading, setPurchaseLoading] = useState<string | null>(null);
+  const [pendingPurchaseId, setPendingPurchaseId] = useState<string | null>(null);
+  const [purchaseStatus, setPurchaseStatus] = useState<string | null>(null);
+
   // Load theme and webhook URL from localStorage on mount
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme') as Theme | null;
@@ -84,6 +102,65 @@ export default function SettingsPage() {
       setWebhookUrl(savedWebhookUrl);
     }
   }, []);
+
+  // Load credit balance for authenticated users
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    setCreditsLoading(true);
+    import('@/app/actions/credits').then(({ getCreditBalance }) =>
+      getCreditBalance().then((result) => {
+        if ('balance' in result) setCreditBalance(result.balance);
+        setCreditsLoading(false);
+      })
+    );
+  }, [isAuthenticated]);
+
+  // Handle return from YooKassa payment redirect
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const params = new URLSearchParams(window.location.search);
+    const payment = params.get('payment');
+    const purchaseId = params.get('purchaseId');
+    if (payment === 'pending' && purchaseId) {
+      setPendingPurchaseId(purchaseId);
+      setPurchaseStatus('pending');
+      // Clean URL
+      window.history.replaceState({}, '', '/settings');
+    }
+  }, []);
+
+  // Poll for purchase confirmation
+  useEffect(() => {
+    if (!pendingPurchaseId || purchaseStatus !== 'pending') return;
+    const interval = setInterval(async () => {
+      const { getPurchaseStatus } = await import('@/app/actions/payments');
+      const result = await getPurchaseStatus(pendingPurchaseId);
+      if ('status' in result && result.status !== 'pending') {
+        setPurchaseStatus(result.status);
+        setPendingPurchaseId(null);
+        // Refresh balance
+        const { getCreditBalance } = await import('@/app/actions/credits');
+        const balanceResult = await getCreditBalance();
+        if ('balance' in balanceResult) setCreditBalance(balanceResult.balance);
+      }
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [pendingPurchaseId, purchaseStatus]);
+
+  const handleBuyPack = async (packId: string) => {
+    setPurchaseLoading(packId);
+    try {
+      const { createPayment } = await import('@/app/actions/payments');
+      const result = await createPayment(packId);
+      if ('redirectUrl' in result) {
+        window.location.href = result.redirectUrl;
+      }
+    } catch {
+      // Payment creation failed
+    } finally {
+      setPurchaseLoading(null);
+    }
+  };
 
   const applyTheme = (newTheme: Theme) => {
     const root = document.documentElement;
@@ -209,6 +286,51 @@ export default function SettingsPage() {
     }
   };
 
+  const handleExportAccountData = async () => {
+    setIsExportingAccount(true);
+    try {
+      const { exportAccountData } = await import('@/app/actions/account');
+      const result = await exportAccountData();
+      if ('data' in result) {
+        const blob = new Blob([JSON.stringify(result.data, null, 2)], {
+          type: 'application/json',
+        });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `account-data-${new Date().toISOString().split('T')[0]}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }
+    } catch (err) {
+      console.error('Account data export failed:', err);
+    } finally {
+      setIsExportingAccount(false);
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    setIsDeleting(true);
+    setDeleteError(null);
+    try {
+      const { signOut } = await import('next-auth/react');
+      const { deleteAccount } = await import('@/app/actions/account');
+      const result = await deleteAccount();
+      if ('error' in result) {
+        setDeleteError(result.error);
+        setIsDeleting(false);
+        return;
+      }
+      await signOut({ callbackUrl: '/?deleted=true' });
+    } catch (err) {
+      console.error('Account deletion failed:', err);
+      setDeleteError('An unexpected error occurred');
+      setIsDeleting(false);
+    }
+  };
+
   return (
     <div className="flex-1 bg-background p-8">
       <div className="max-w-2xl mx-auto space-y-6">
@@ -329,10 +451,113 @@ export default function SettingsPage() {
               <p className="text-xs text-muted-foreground">
                 Your n8n webhook URL for resume optimization. Stored only in your browser.
               </p>
+              {webhookUrl.trim() && (
+                <div className="flex items-start gap-2 p-2 bg-yellow-50 dark:bg-yellow-950/30 border border-yellow-200 dark:border-yellow-800 rounded text-xs">
+                  <AlertTriangle className="h-3.5 w-3.5 text-yellow-600 flex-shrink-0 mt-0.5" />
+                  <span className="text-yellow-700 dark:text-yellow-400">
+                    При использовании оптимизации резюме ваши карьерные данные будут
+                    отправлены на указанный вами внешний сервис. Вы несёте ответственность
+                    за сохранность данных на этом сервисе.
+                  </span>
+                </div>
+              )}
             </div>
 
           </CardContent>
         </Card>
+
+        {/* Resume Optimization Credits */}
+        {isAuthenticated && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg flex items-center gap-2">
+                <Coins className="h-5 w-5" />
+                Resume Optimization
+              </CardTitle>
+              <CardDescription>
+                Purchase credit packs to optimize resumes with our service
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {/* Pending purchase banner */}
+              {purchaseStatus === 'pending' && (
+                <div className="flex items-center gap-2 p-3 bg-yellow-50 dark:bg-yellow-950/30 border border-yellow-200 dark:border-yellow-800 rounded-lg">
+                  <Clock className="h-4 w-4 text-yellow-600 animate-pulse" />
+                  <span className="text-sm text-yellow-700 dark:text-yellow-400">
+                    Payment processing... Credits will appear shortly.
+                  </span>
+                </div>
+              )}
+              {purchaseStatus === 'confirmed' && (
+                <div className="flex items-center gap-2 p-3 bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-800 rounded-lg">
+                  <CheckCircle className="h-4 w-4 text-green-600" />
+                  <span className="text-sm text-green-700 dark:text-green-400">
+                    Payment confirmed! Credits added to your balance.
+                  </span>
+                </div>
+              )}
+              {purchaseStatus === 'failed' && (
+                <div className="flex items-center gap-2 p-3 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 rounded-lg">
+                  <XCircle className="h-4 w-4 text-red-600" />
+                  <span className="text-sm text-red-700 dark:text-red-400">
+                    Payment failed. Please try again.
+                  </span>
+                </div>
+              )}
+
+              {/* Balance display */}
+              <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
+                <div>
+                  <p className="font-medium text-sm">Credit Balance</p>
+                  <p className="text-xs text-muted-foreground">
+                    Each credit = one resume optimization
+                  </p>
+                </div>
+                {creditsLoading ? (
+                  <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+                ) : (
+                  <Badge variant={creditBalance && creditBalance > 0 ? 'default' : 'secondary'} className="text-base px-3 py-1">
+                    {creditBalance ?? 0} credits
+                  </Badge>
+                )}
+              </div>
+
+              {/* Pack cards */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                {PACKS.map((pack) => (
+                  <div
+                    key={pack.id}
+                    className="border rounded-lg p-4 flex flex-col items-center text-center space-y-2"
+                  >
+                    <p className="font-semibold text-sm">{pack.name}</p>
+                    <p className="text-2xl font-bold">{pack.credits}</p>
+                    <p className="text-xs text-muted-foreground">credits</p>
+                    <p className="font-medium text-sm">{pack.priceRub} RUB</p>
+                    <Button
+                      size="sm"
+                      variant={creditBalance === 0 ? 'default' : 'outline'}
+                      className="w-full gap-2"
+                      disabled={purchaseLoading !== null}
+                      onClick={() => handleBuyPack(pack.id)}
+                    >
+                      {purchaseLoading === pack.id ? (
+                        <>
+                          <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                          Processing...
+                        </>
+                      ) : (
+                        <>
+                          <ShoppingCart className="h-3.5 w-3.5" />
+                          Buy
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Theme Section */}
         <Card>
@@ -504,7 +729,7 @@ export default function SettingsPage() {
               Irreversible actions. Please be careful.
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="space-y-3">
             <div className="flex items-center justify-between p-3 bg-destructive/5 rounded-lg border border-destructive/20">
               <div>
                 <p className="font-medium text-sm">Clear All Data</p>
@@ -547,6 +772,99 @@ export default function SettingsPage() {
                 </AlertDialogContent>
               </AlertDialog>
             </div>
+
+            {/* Delete Account — authenticated users only */}
+            {isAuthenticated && (
+              <div className="flex items-center justify-between p-3 bg-destructive/5 rounded-lg border border-destructive/20">
+                <div>
+                  <p className="font-medium text-sm">Delete Account</p>
+                  <p className="text-xs text-muted-foreground">
+                    Permanently delete your account and all data
+                  </p>
+                </div>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button variant="destructive" size="sm" className="gap-2">
+                      <UserX className="h-4 w-4" />
+                      Delete Account
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Удаление аккаунта</AlertDialogTitle>
+                      <AlertDialogDescription asChild>
+                        <div className="space-y-3">
+                          <p>
+                            Это действие необратимо. Будут удалены:
+                          </p>
+                          <ul className="list-disc list-inside space-y-1 text-sm">
+                            <li>Ваш профиль, все места работы и достижения</li>
+                            <li>Учётная запись и данные авторизации</li>
+                            <li>Записи о кредитах и использовании</li>
+                            <li>Персональная база данных</li>
+                          </ul>
+                          {creditBalance !== null && creditBalance > 0 && (
+                            <div className="flex items-center gap-2 p-2 bg-yellow-50 dark:bg-yellow-950/30 border border-yellow-200 dark:border-yellow-800 rounded text-sm">
+                              <AlertTriangle className="h-4 w-4 text-yellow-600 flex-shrink-0" />
+                              <span className="text-yellow-700 dark:text-yellow-400">
+                                У вас {creditBalance} неиспользованных кредитов. Они будут утеряны.
+                              </span>
+                            </div>
+                          )}
+                          <p className="text-sm">
+                            Записи о покупках будут обезличены и сохранены в соответствии с требованиями закона (5 лет).
+                          </p>
+                          {deleteError && (
+                            <div className="flex items-center gap-2 p-2 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 rounded text-sm">
+                              <XCircle className="h-4 w-4 text-red-600 flex-shrink-0" />
+                              <span className="text-red-700 dark:text-red-400">{deleteError}</span>
+                            </div>
+                          )}
+                        </div>
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter className="flex-col sm:flex-row gap-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={handleExportAccountData}
+                        disabled={isExportingAccount || isDeleting}
+                        className="gap-2"
+                      >
+                        {isExportingAccount ? (
+                          <>
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                            Экспорт...
+                          </>
+                        ) : (
+                          <>
+                            <Download className="h-4 w-4" />
+                            Скачать данные
+                          </>
+                        )}
+                      </Button>
+                      <div className="flex gap-2 ml-auto">
+                        <AlertDialogCancel disabled={isDeleting}>Отмена</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={handleDeleteAccount}
+                          className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                          disabled={isDeleting}
+                        >
+                          {isDeleting ? (
+                            <>
+                              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                              Удаление...
+                            </>
+                          ) : (
+                            'Удалить аккаунт'
+                          )}
+                        </AlertDialogAction>
+                      </div>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </div>
+            )}
           </CardContent>
         </Card>
 

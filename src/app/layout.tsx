@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
+import { ConsentBanner } from "@/components/consent/consent-banner";
+import { ConsentRecorder } from "@/components/consent/consent-recorder";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -47,6 +49,8 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${playfairDisplay.variable} antialiased`}
       >
         <Providers>
+          <ConsentBanner />
+          <ConsentRecorder />
           <div className="min-h-screen flex flex-col">
             <div className="flex-1">
               {children}

@@ -101,11 +101,13 @@ export async function getUsers(params: {
       break;
     case 'createdAt':
     default:
-      orderExpr = sortDir(userDatabases.createdAt);
+      // Sort by user ID as proxy (UUIDs are random, but this provides stable ordering)
+      // DB createdAt is fetched separately due to 1:N relation
+      orderExpr = sortDir(users.id);
       break;
   }
 
-  // Fetch users with joins
+  // Fetch users with credit balance (1:1 relation, safe to join)
   const rows = await db
     .select({
       id: users.id,
@@ -113,30 +115,47 @@ export async function getUsers(params: {
       email: users.email,
       image: users.image,
       balance: creditBalances.balance,
-      dbStatus: userDatabases.status,
-      dbCreatedAt: userDatabases.createdAt,
     })
     .from(users)
     .leftJoin(creditBalances, eq(creditBalances.userId, users.id))
-    .leftJoin(userDatabases, eq(userDatabases.userId, users.id))
     .where(searchCondition)
     .orderBy(orderExpr)
     .limit(PAGE_SIZE)
     .offset(offset);
 
-  // Fetch providers for these users
+  // Fetch providers and DB status separately (users can have multiple rows in these tables)
   const userIds = rows.map((r) => r.id);
   let providerMap: Record<string, string> = {};
+  let dbMap: Record<string, { status: string; createdAt: string }> = {};
   if (userIds.length > 0) {
-    const accs = await db
-      .select({ userId: accounts.userId, provider: accounts.provider })
-      .from(accounts)
-      .where(sql`${accounts.userId} IN (${sql.join(userIds.map((id) => sql`${id}`), sql`, `)})`);
+    const inClause = sql`${sql.join(userIds.map((id) => sql`${id}`), sql`, `)}`;
+
+    const [accs, dbs] = await Promise.all([
+      db
+        .select({ userId: accounts.userId, provider: accounts.provider })
+        .from(accounts)
+        .where(sql`${accounts.userId} IN (${inClause})`),
+      db
+        .select({
+          userId: userDatabases.userId,
+          status: userDatabases.status,
+          createdAt: userDatabases.createdAt,
+        })
+        .from(userDatabases)
+        .where(sql`${userDatabases.userId} IN (${inClause})`)
+        .orderBy(desc(userDatabases.createdAt)),
+    ]);
+
     for (const acc of accs) {
-      // If user has multiple providers, join them
       providerMap[acc.userId] = providerMap[acc.userId]
         ? `${providerMap[acc.userId]}, ${acc.provider}`
         : acc.provider;
+    }
+    for (const d of dbs) {
+      // Keep most recent DB entry per user
+      if (!dbMap[d.userId]) {
+        dbMap[d.userId] = { status: d.status, createdAt: d.createdAt };
+      }
     }
   }
 
@@ -148,8 +167,8 @@ export async function getUsers(params: {
       image: r.image,
       provider: providerMap[r.id] || null,
       balance: r.balance ?? 0,
-      dbStatus: r.dbStatus,
-      createdAt: r.dbCreatedAt,
+      dbStatus: dbMap[r.id]?.status ?? null,
+      createdAt: dbMap[r.id]?.createdAt ?? null,
     })),
     totalCount,
     page,
