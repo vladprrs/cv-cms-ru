@@ -324,11 +324,7 @@ async function generateResumeLocal(
       resumeData = result;
     }
 
-    if (!resumeData.name || !resumeData.experience) {
-      return { error: 'Invalid resume data received from AI agent' };
-    }
-
-    // Inject contacts from local profile
+    // Inject contacts and name from local profile
     if (profileData) {
       const contacts: ResumeContacts = {};
       if (profileData.email) contacts.email = profileData.email;
@@ -340,6 +336,11 @@ async function generateResumeLocal(
       if (profileData.telegram) contacts.telegram = profileData.telegram;
       resumeData.contacts = contacts;
       if (profileData.fullName) resumeData.name = profileData.fullName;
+    }
+
+    // Validate AI response — only check experience (name is injected from profile above)
+    if (!Array.isArray(resumeData.experience) || resumeData.experience.length === 0) {
+      return { error: 'AI agent did not return any experience entries. Please try again.' };
     }
 
     return { data: resumeData };

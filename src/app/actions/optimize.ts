@@ -151,17 +151,7 @@ export async function generateResume(
       resumeData = result;
     }
 
-    // Basic shape validation
-    if (!resumeData.name || !resumeData.experience) {
-      // Refund credit on invalid response
-      if (isServiceMode && usageRecordId) {
-        const { refundCredit } = await import('@/app/actions/credits');
-        await refundCredit(usageRecordId);
-      }
-      return { error: 'Invalid resume data received from AI agent' };
-    }
-
-    // Inject contacts from profile DB (not from LLM)
+    // Inject contacts and name from profile DB (not from LLM)
     if (profileData) {
       const contacts: ResumeContacts = {};
       if (profileData.email) contacts.email = profileData.email;
@@ -173,6 +163,16 @@ export async function generateResume(
       if (profileData.telegram) contacts.telegram = profileData.telegram;
       resumeData.contacts = contacts;
       if (profileData.fullName) resumeData.name = profileData.fullName;
+    }
+
+    // Validate AI response — only check experience (name is injected from profile above)
+    if (!Array.isArray(resumeData.experience) || resumeData.experience.length === 0) {
+      // Refund credit on invalid response
+      if (isServiceMode && usageRecordId) {
+        const { refundCredit } = await import('@/app/actions/credits');
+        await refundCredit(usageRecordId);
+      }
+      return { error: 'AI agent did not return any experience entries. Please try again.' };
     }
 
     return { data: resumeData };
