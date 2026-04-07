@@ -7,6 +7,9 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 ARG DOCKER=1
 ENV DOCKER=$DOCKER
+# NEXT_PUBLIC_* vars must be available at build time (inlined into JS bundle)
+ARG NEXT_PUBLIC_AUTH_ENABLED=true
+ENV NEXT_PUBLIC_AUTH_ENABLED=$NEXT_PUBLIC_AUTH_ENABLED
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npm run build

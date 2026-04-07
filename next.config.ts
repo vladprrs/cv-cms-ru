@@ -4,7 +4,9 @@ const nextConfig: NextConfig = {
   output: process.env.DOCKER ? "standalone" : undefined,
 
   env: {
-    NEXT_PUBLIC_AUTH_ENABLED: process.env.TURSO_ADMIN_DB_URL ? 'true' : '',
+    // In Docker: set via ARG/ENV in Dockerfile (build-time)
+    // In dev: derived from TURSO_ADMIN_DB_URL presence
+    NEXT_PUBLIC_AUTH_ENABLED: process.env.NEXT_PUBLIC_AUTH_ENABLED || (process.env.TURSO_ADMIN_DB_URL ? 'true' : ''),
   },
 
   images: {
